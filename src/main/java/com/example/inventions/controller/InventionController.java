@@ -32,7 +32,7 @@ public class InventionController {
         Invention invention = inventionService.getInventionById(id);
         if (invention == null) {
             Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "404 Not Found");
+            errorResponse.put("error", "404 Not Found!");
             errorResponse.put("message", "Изобретение с ID " + id + " не найдено.");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
