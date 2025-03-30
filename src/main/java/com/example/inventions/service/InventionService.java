@@ -99,4 +99,15 @@ public class InventionService {
 
         inventionRepository.delete(invention);
     }
+
+    // InventionService.java
+    public void removeCategoryFromInvention(Long inventionId, Long categoryId) {
+        Invention invention = inventionRepository.findById(inventionId)
+                .orElseThrow(() -> new EntityNotFoundException("Invention not found"));
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+
+        invention.getCategories().remove(category);
+        inventionRepository.save(invention);
+    }
 }

@@ -50,4 +50,13 @@ public class InventionController {
         inventionService.deleteInventionById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/{inventionId}/categories/{categoryId}")
+    public ResponseEntity<Void> removeCategoryFromInvention(
+            @PathVariable Long inventionId,
+            @PathVariable Long categoryId) {
+        inventionService.removeCategoryFromInvention(inventionId, categoryId);
+        return ResponseEntity.noContent().build();
+    }
+
 }
