@@ -34,8 +34,8 @@ public class CategoryService {
     @Transactional
     public CategoryDto createCategory(CategoryDto categoryDto) {
         if (categoryRepository.findByNameIgnoreCase(categoryDto.getName()).isPresent()) {
-            throw new IllegalArgumentException("Category with name '" +
-                    categoryDto.getName() + "' already exists");
+            throw new IllegalArgumentException("Category with name '"
+                    + categoryDto.getName() + "' already exists");
         }
 
         Category category = new Category();
