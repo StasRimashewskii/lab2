@@ -3,9 +3,9 @@ package com.example.inventions.controller;
 import com.example.inventions.dto.InventionDto;
 import com.example.inventions.dto.InventionFullDto;
 import com.example.inventions.service.InventionService;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 @RequestMapping("/inventions")

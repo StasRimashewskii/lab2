@@ -2,10 +2,10 @@ package com.example.inventions.mapper;
 
 import com.example.inventions.dto.InventorDto;
 import com.example.inventions.entity.Inventor;
-import org.springframework.stereotype.Component;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Component;
 
 @Component
 public class InventorMapper {

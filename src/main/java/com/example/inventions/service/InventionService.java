@@ -8,11 +8,11 @@ import com.example.inventions.mapper.InventionMapper;
 import com.example.inventions.repository.CategoryRepository;
 import com.example.inventions.repository.InventionRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class InventionService {

@@ -6,10 +6,10 @@ import com.example.inventions.entity.Inventor;
 import com.example.inventions.repository.InventionRepository;
 import com.example.inventions.repository.InventorRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class InventorService {

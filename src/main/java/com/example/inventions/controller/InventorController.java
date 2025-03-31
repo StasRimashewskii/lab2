@@ -2,9 +2,9 @@ package com.example.inventions.controller;
 
 import com.example.inventions.dto.InventorDto;
 import com.example.inventions.service.InventorService;
+import java.util.Set;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/inventions")
