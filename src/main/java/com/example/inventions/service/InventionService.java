@@ -47,8 +47,13 @@ public class InventionService {
 
     @Transactional(readOnly = true)
     public List<InventionDto> findInventionsByTitle(String title) {
-        return inventionRepository.findByTitleContainingIgnoreCase(title)
-                .stream()
+        List<Invention> inventions = inventionRepository.findByTitleContainingIgnoreCase(title);
+
+        if (inventions.isEmpty()) {
+            throw new EntityNotFoundException("No inventions found with title: " + title);
+        }
+
+        return inventions.stream()
                 .map(inventionMapper::convertToDto)
                 .toList();
     }
