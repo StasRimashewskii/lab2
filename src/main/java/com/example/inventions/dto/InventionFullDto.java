@@ -9,8 +9,8 @@ public class InventionFullDto {
     private String title;
     private String description;
     private String instruction;
-    private Set<CategoryDto> categories;  // Изменено с ingredients на categories
-    private Set<InventorDto> inventors;   // Изменено с reviews на inventors
+    private Set<CategoryDto> categories;
+    private Set<InventorDto> inventors;
 
     // Геттеры и сеттеры
     public void setId(Long id) {

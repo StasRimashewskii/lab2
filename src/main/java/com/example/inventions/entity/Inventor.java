@@ -14,7 +14,7 @@ public class Inventor {
     private String name;
 
     @Column(nullable = false)
-    private String expertise;
+    private String country;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "invention_id", nullable = false)
@@ -37,12 +37,12 @@ public class Inventor {
         this.name = name;
     }
 
-    public String getExpertise() {
-        return expertise;
+    public String getCountry() {
+        return country;
     }
 
-    public void setExpertise(String expertise) {
-        this.expertise = expertise;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public Invention getInvention() {

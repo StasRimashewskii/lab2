@@ -1,5 +1,6 @@
 package com.example.inventions.service;
 
+import com.example.inventions.cache.InventionCache;
 import com.example.inventions.dto.InventionDto;
 import com.example.inventions.dto.InventionFullDto;
 import com.example.inventions.entity.Category;
@@ -22,13 +23,16 @@ public class InventionService {
     private final InventionRepository inventionRepository;
     private final CategoryRepository categoryRepository;
     private final InventionMapper inventionMapper;
+    private final InventionCache inventionCache;
 
     public InventionService(InventionRepository inventionRepository,
                             CategoryRepository categoryRepository,
-                            InventionMapper inventionMapper) {
+                            InventionMapper inventionMapper,
+                            InventionCache inventionCache) {
         this.inventionRepository = inventionRepository;
         this.categoryRepository = categoryRepository;
         this.inventionMapper = inventionMapper;
+        this.inventionCache = inventionCache;
     }
 
     @Transactional(readOnly = true)
@@ -47,15 +51,51 @@ public class InventionService {
 
     @Transactional(readOnly = true)
     public List<InventionDto> findInventionsByTitle(String title) {
+        String cacheKey = "inventions_by_title:" + title.toLowerCase();
+
+        // Используем generic-метод get с указанием типа
+        List<InventionDto> cachedResult = inventionCache.get(cacheKey, List.class);
+
+        if (cachedResult != null) {
+            return cachedResult;
+        }
+
         List<Invention> inventions = inventionRepository.findByTitleContainingIgnoreCase(title);
 
         if (inventions.isEmpty()) {
             throw new EntityNotFoundException("No inventions found with title: " + title);
         }
 
-        return inventions.stream()
+        List<InventionDto> result = inventions.stream()
                 .map(inventionMapper::convertToDto)
                 .toList();
+
+        inventionCache.put(cacheKey, result);
+        return result;
+    }
+
+    // Добавляем метод для native query, если нужно
+    @Transactional(readOnly = true)
+    public List<InventionDto> findInventionsByTitleNative(String title) {
+        String cacheKey = "inventions_by_title_native:" + title.toLowerCase();
+        List<InventionDto> cachedResult = inventionCache.get(cacheKey, List.class);
+
+        if (cachedResult != null) {
+            return cachedResult;
+        }
+
+        List<Invention> inventions = inventionRepository.findByTitleContainingIgnoreCaseNative(title);
+
+        if (inventions.isEmpty()) {
+            throw new EntityNotFoundException("No inventions found with title: " + title);
+        }
+
+        List<InventionDto> result = inventions.stream()
+                .map(inventionMapper::convertToDto)
+                .toList();
+
+        inventionCache.put(cacheKey, result);
+        return result;
     }
 
     @Transactional
@@ -115,4 +155,52 @@ public class InventionService {
         invention.getCategories().remove(category);
         inventionRepository.save(invention);
     }
+
+    @Transactional(readOnly = true)
+    public List<InventionDto> findInventionsByCategoryNames(List<String> categoryNames) {
+        List<Invention> inventions = inventionRepository.findByCategoriesNameIn(
+                categoryNames.stream()
+                        .map(String::toLowerCase)
+                        .collect(Collectors.toList())
+        );
+
+        if (inventions.isEmpty()) {
+            throw new EntityNotFoundException("No inventions found with categories: " + categoryNames);
+        }
+
+        return inventions.stream()
+                .map(inventionMapper::convertToDto)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<InventionDto> findInventionsByAuthorsCountry(String country) {
+        List<Invention> inventions = inventionRepository.findByInventorsCountry(country);
+
+        if (inventions.isEmpty()) {
+            throw new EntityNotFoundException("No inventions found with authors from country: " + country);
+        }
+
+        return inventions.stream()
+                .map(inventionMapper::convertToDto)
+                .toList();
+    }
+
+
+    @Transactional(readOnly = true)
+    public List<InventionDto> findInventionsByExactCategories(List<String> categoryNames) {
+        List<Invention> inventions = inventionRepository.findByExactCategories(
+                categoryNames.stream().map(String::toLowerCase).collect(Collectors.toList()),
+                categoryNames.size()
+        );
+
+        if (inventions.isEmpty()) {
+            throw new EntityNotFoundException("No inventions found with exact categories: " + categoryNames);
+        }
+
+        return inventions.stream()
+                .map(inventionMapper::convertToDto)
+                .toList();
+    }
+
 }

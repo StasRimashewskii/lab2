@@ -59,4 +59,24 @@ public class InventionController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/search/multiple-categories")
+    public ResponseEntity<List<InventionDto>> findInventionsByCategoryNames(
+            @RequestParam List<String> categoryNames) {
+        List<InventionDto> inventions = inventionService.findInventionsByCategoryNames(categoryNames);
+        return ResponseEntity.ok(inventions);
+    }
+
+    @GetMapping("/search/exact-categories")
+    public ResponseEntity<List<InventionDto>> findInventionsByExactCategories(@RequestParam List<String> categoryNames) {
+        List<InventionDto> inventions = inventionService.findInventionsByExactCategories(categoryNames);
+        return ResponseEntity.ok(inventions);
+    }
+
+
+    @GetMapping("/search/authors-country")
+    public ResponseEntity<List<InventionDto>> findInventionsByAuthorsCountry(@RequestParam String country) {
+        List<InventionDto> inventions = inventionService.findInventionsByAuthorsCountry(country);
+        return ResponseEntity.ok(inventions);
+    }
+
 }

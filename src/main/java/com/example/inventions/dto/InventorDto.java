@@ -2,15 +2,15 @@ package com.example.inventions.dto;
 
 public class InventorDto {
     private Long id;
-    private String name;      // Изменено с message на name
-    private String expertise; // Аналог rating, но для изобретателя
+    private String name;
+    private String country;
 
     public InventorDto() {}
 
-    public InventorDto(Long id, String name, String expertise) {
+    public InventorDto(Long id, String name, String country) {
         this.id = id;
         this.name = name;
-        this.expertise = expertise;
+        this.country = country;
     }
 
     // Геттеры и сеттеры
@@ -22,12 +22,12 @@ public class InventorDto {
         this.name = name;
     }
 
-    public String getExpertise() {
-        return expertise;
+    public String getCountry() {
+        return country;
     }
 
-    public void setExpertise(String expertise) {
-        this.expertise = expertise;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public void setId(Long id) {

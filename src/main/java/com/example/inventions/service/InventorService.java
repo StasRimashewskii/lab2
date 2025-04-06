@@ -30,7 +30,7 @@ public class InventorService {
 
         Inventor inventor = new Inventor();
         inventor.setName(inventorDto.getName());
-        inventor.setExpertise(inventorDto.getExpertise());
+        inventor.setCountry(inventorDto.getCountry());
         inventor.setInvention(invention);
 
         Inventor savedInventor = inventorRepository.save(inventor);
@@ -59,7 +59,7 @@ public class InventorService {
         }
 
         inventor.setName(inventorDto.getName());
-        inventor.setExpertise(inventorDto.getExpertise());
+        inventor.setCountry(inventorDto.getCountry());
         Inventor updatedInventor = inventorRepository.save(inventor);
 
         return convertToDto(updatedInventor);
@@ -79,7 +79,7 @@ public class InventorService {
         return new InventorDto(
                 inventor.getId(),
                 inventor.getName(),
-                inventor.getExpertise()
+                inventor.getCountry()
         );
     }
 }

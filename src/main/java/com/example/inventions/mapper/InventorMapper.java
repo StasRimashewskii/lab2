@@ -23,7 +23,7 @@ public class InventorMapper {
         InventorDto dto = new InventorDto();
         dto.setId(inventor.getId());
         dto.setName(inventor.getName());
-        dto.setExpertise(inventor.getExpertise());
+        dto.setCountry(inventor.getCountry());
         return dto;
     }
 }

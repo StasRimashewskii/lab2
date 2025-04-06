@@ -22,7 +22,7 @@ public class Invention {
     private String instruction;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JoinTable(name = "invention_category",
+    @JoinTable(name = "inventions_categories",
             joinColumns = @JoinColumn(name = "invention_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();

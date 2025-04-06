@@ -8,7 +8,7 @@ public class InventionDto {
     private String title;
     private String description;
     private String instruction;
-    private Set<CategoryDto> categories;  // Изменено с ingredients на categories
+    private Set<CategoryDto> categories;
 
     // Геттеры и сеттеры
     public String getTitle() {
