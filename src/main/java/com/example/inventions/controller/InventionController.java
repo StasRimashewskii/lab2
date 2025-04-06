@@ -79,4 +79,9 @@ public class InventionController {
         return ResponseEntity.ok(inventions);
     }
 
+    @GetMapping("/native")
+    public ResponseEntity<List<InventionDto>> getInventionsByTitleNative(
+            @RequestParam String title) {
+        return ResponseEntity.ok(inventionService.findInventionsByTitleNative(title));
+    }
 }

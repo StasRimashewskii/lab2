@@ -53,15 +53,12 @@ public class InventionService {
     public List<InventionDto> findInventionsByTitle(String title) {
         String cacheKey = "inventions_by_title:" + title.toLowerCase();
 
-        // Используем generic-метод get с указанием типа
-        List<InventionDto> cachedResult = inventionCache.get(cacheKey, List.class);
-
+        List<InventionDto> cachedResult = inventionCache.getList(cacheKey, InventionDto.class);
         if (cachedResult != null) {
             return cachedResult;
         }
 
         List<Invention> inventions = inventionRepository.findByTitleContainingIgnoreCase(title);
-
         if (inventions.isEmpty()) {
             throw new EntityNotFoundException("No inventions found with title: " + title);
         }
@@ -74,18 +71,16 @@ public class InventionService {
         return result;
     }
 
-    // Добавляем метод для native query, если нужно
     @Transactional(readOnly = true)
     public List<InventionDto> findInventionsByTitleNative(String title) {
         String cacheKey = "inventions_by_title_native:" + title.toLowerCase();
-        List<InventionDto> cachedResult = inventionCache.get(cacheKey, List.class);
 
+        List<InventionDto> cachedResult = inventionCache.getList(cacheKey, InventionDto.class);
         if (cachedResult != null) {
             return cachedResult;
         }
 
         List<Invention> inventions = inventionRepository.findByTitleContainingIgnoreCaseNative(title);
-
         if (inventions.isEmpty()) {
             throw new EntityNotFoundException("No inventions found with title: " + title);
         }
