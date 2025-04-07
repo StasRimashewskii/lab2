@@ -134,11 +134,19 @@ public class InventionService {
         Invention invention = inventionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(INVENTION_NOT_FOUND));
 
+        // Удаляем связи
         invention.getCategories().clear();
         inventionRepository.save(invention);
 
+        // Удаляем из базы
         inventionRepository.delete(invention);
+
+        // Удаляем из кэша по связанным ключам
+        String title = invention.getTitle().toLowerCase();
+        inventionCache.evictByKeyPrefix("inventions_by_title:" + title);
+        inventionCache.evictByKeyPrefix("inventions_by_title_native:" + title);
     }
+
 
     // InventionService.java
     public void removeCategoryFromInvention(Long inventionId, Long categoryId) {

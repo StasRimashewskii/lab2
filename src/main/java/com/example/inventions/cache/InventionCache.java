@@ -105,4 +105,12 @@ public class InventionCache {
             return cache.size();
         }
     }
+
+    public void evictByKeyPrefix(String prefix) {
+        synchronized (cache) {
+            cache.keySet().removeIf(key -> key.startsWith(prefix));
+            logger.info(() -> String.format("Cache entries with prefix '%s' removed", prefix));
+        }
+    }
+
 }
