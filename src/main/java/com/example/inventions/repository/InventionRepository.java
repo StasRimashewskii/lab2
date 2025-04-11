@@ -22,16 +22,12 @@ public interface InventionRepository extends JpaRepository<Invention, Long> {
     @Query("SELECT DISTINCT i FROM Invention i JOIN i.categories c WHERE LOWER(c.name) IN :categoryNames")
     List<Invention> findByCategoriesNameIn(@Param("categoryNames") List<String> categoryNames);
 
-    @Query("SELECT DISTINCT i FROM Invention i JOIN i.inventors inv WHERE inv.country = :country")
-    List<Invention> findByInventorsCountry(@Param("country") String country);
+    @Query("SELECT DISTINCT i FROM Invention i JOIN i.authors auth WHERE auth.country = :country")
+    List<Invention> findByAuthorsCountry(@Param("country") String country);
 
     @Query("""
-    SELECT i FROM Invention i 
-    WHERE SIZE(i.categories) = :categoryCount 
-    AND NOT EXISTS (
-        SELECT c FROM Category c 
-        WHERE c MEMBER OF i.categories 
-        AND LOWER(c.name) NOT IN :categoryNames
+    SELECT i FROM Invention i WHERE SIZE(i.categories) = :categoryCount AND NOT EXISTS (
+        SELECT c FROM Category c WHERE c MEMBER OF i.categories AND LOWER(c.name) NOT IN :categoryNames
     )
 """)
     List<Invention> findByExactCategories(@Param("categoryNames") List<String> categoryNames,

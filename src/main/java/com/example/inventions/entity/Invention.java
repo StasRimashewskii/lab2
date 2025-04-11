@@ -29,7 +29,7 @@ public class Invention {
 
     @OneToMany(mappedBy = "invention", cascade = CascadeType.ALL,
             orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<Inventor> inventors = new HashSet<>();
+    private Set<Author> authors = new HashSet<>();
 
     public Invention() {}
 
@@ -80,11 +80,11 @@ public class Invention {
         this.categories = categories;
     }
 
-    public Set<Inventor> getInventors() {
-        return inventors;
+    public Set<Author> getAuthors() {
+        return authors;
     }
 
-    public void setInventors(Set<Inventor> inventors) {
-        this.inventors = inventors;
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
     }
 }

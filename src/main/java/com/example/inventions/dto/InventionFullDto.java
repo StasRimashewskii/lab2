@@ -10,7 +10,7 @@ public class InventionFullDto {
     private String description;
     private String instruction;
     private Set<CategoryDto> categories;
-    private Set<InventorDto> inventors;
+    private Set<AuthorDto> authors;
 
     // Геттеры и сеттеры
     public void setId(Long id) {
@@ -33,8 +33,8 @@ public class InventionFullDto {
         this.categories = categories;
     }
 
-    public void setInventors(Set<InventorDto> inventors) {
-        this.inventors = inventors;
+    public void setAuthors(Set<AuthorDto> authors) {
+        this.authors = authors;
     }
 
     public Long getId() {
@@ -57,7 +57,7 @@ public class InventionFullDto {
         return categories;
     }
 
-    public Set<InventorDto> getInventors() {
-        return inventors;
+    public Set<AuthorDto> getAuthors() {
+        return authors;
     }
 }

@@ -1,13 +1,13 @@
 package com.example.inventions.dto;
 
-public class InventorDto {
+public class AuthorDto {
     private Long id;
     private String name;
     private String country;
 
-    public InventorDto() {}
+    public AuthorDto() {}
 
-    public InventorDto(Long id, String name, String country) {
+    public AuthorDto(Long id, String name, String country) {
         this.id = id;
         this.name = name;
         this.country = country;
