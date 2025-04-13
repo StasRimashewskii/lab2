@@ -109,4 +109,17 @@ public class AuthorService {
                 })
                 .collect(Collectors.toList());
     }
+
+    @Transactional(readOnly = true)
+    public AuthorDto getAuthorByName(String name) {
+        Author author = authorRepository.findByNameWithInventions(name)
+                .orElseThrow(() -> new EntityNotFoundException("Author not found with name " + name));
+
+        AuthorDto dto = authorMapper.convertToDto(author);
+        if (author.getInventions() != null && !author.getInventions().isEmpty()) {
+            dto.setInventions(authorMapper.convertInventionsToDto(author.getInventions()));
+        }
+
+        return dto;
+    }
 }

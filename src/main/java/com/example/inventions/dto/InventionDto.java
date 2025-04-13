@@ -1,13 +1,19 @@
 package com.example.inventions.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import java.util.Set;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class InventionDto {
+    @NotBlank(message = "Название изобретения не может быть пустым")
+    @Size(max = 150, message = "Название не должно превышать 150 символов")
     private String title;
+
+    @NotBlank(message = "Описание изобретения не может быть пустым")
     private String description;
+
     private String instruction;
+
     private Set<CategoryDto> categories;
 
     // Геттеры и сеттеры

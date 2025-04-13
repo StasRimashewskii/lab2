@@ -4,6 +4,7 @@ import com.example.inventions.dto.AuthorDto;
 import com.example.inventions.dto.AuthorFullDto;
 import com.example.inventions.dto.InventionDto;
 import com.example.inventions.service.AuthorService;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ public class AuthorController {
     }
 
     @PostMapping
-    public ResponseEntity<AuthorDto> createAuthor(@RequestBody AuthorDto authorDto) {
+    public ResponseEntity<AuthorDto> createAuthor(@Valid @RequestBody AuthorDto authorDto) {
         return ResponseEntity.ok(authorService.createAuthor(authorDto));
     }
 
@@ -49,5 +50,10 @@ public class AuthorController {
     @GetMapping("/{authorId}/inventions")
     public ResponseEntity<List<InventionDto>> getInventionsByAuthor(@PathVariable Long authorId) {
         return ResponseEntity.ok(authorService.getInventionsByAuthor(authorId));
+    }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<AuthorDto> getAuthorByName(@PathVariable String name) {
+        return ResponseEntity.ok(authorService.getAuthorByName(name));
     }
 }

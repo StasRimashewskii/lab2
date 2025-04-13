@@ -1,20 +1,21 @@
 package com.example.inventions.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import java.util.Set;
 
 public class AuthorDto {
     private Long id;
+
+    @NotBlank(message = "Имя автора не может быть пустым")
+    @Size(max = 100, message = "Имя автора не должно превышать 100 символов")
     private String name;
+
+    @NotBlank(message = "Страна не может быть пустой")
+    @Size(max = 100, message = "Название страны не должно превышать 100 символов")
     private String country;
+
     private Set<InventionDto> inventions;
-
-    public AuthorDto() {}
-
-    public AuthorDto(Long id, String name, String country) {
-        this.id = id;
-        this.name = name;
-        this.country = country;
-    }
 
     // Геттеры и сеттеры
     public String getName() {

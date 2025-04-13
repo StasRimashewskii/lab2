@@ -3,6 +3,7 @@ package com.example.inventions.controller;
 import com.example.inventions.dto.InventionDto;
 import com.example.inventions.dto.InventionFullDto;
 import com.example.inventions.service.InventionService;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,14 +35,14 @@ public class InventionController {
     }
 
     @PostMapping
-    public ResponseEntity<InventionFullDto> createInvention(@RequestBody InventionDto inventionDto) {
+    public ResponseEntity<InventionFullDto> createInvention(@Valid @RequestBody InventionDto inventionDto) {
         return ResponseEntity.ok(inventionService.createInvention(inventionDto));
     }
 
     @PutMapping("/{inventionId}")
     public ResponseEntity<InventionFullDto> updateInvention(
             @PathVariable Long inventionId,
-            @RequestBody InventionDto inventionDto) {
+            @Valid @RequestBody InventionDto inventionDto) {
         return ResponseEntity.ok(inventionService.updateInvention(inventionId, inventionDto));
     }
 
