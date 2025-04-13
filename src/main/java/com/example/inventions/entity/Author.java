@@ -1,6 +1,8 @@
 package com.example.inventions.entity;
 
 import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "authors")
@@ -16,9 +18,11 @@ public class Author {
     @Column(nullable = false)
     private String country;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "invention_id", nullable = false)
-    private Invention invention;
+    @OneToMany(mappedBy = "author",
+            cascade = {},  // Убираем все каскадные операции
+            orphanRemoval = false,  // Отключаем orphanRemoval
+            fetch = FetchType.LAZY)
+    private Set<Invention> inventions = new HashSet<>();
 
     // Геттеры и сеттеры
     public Long getId() {
@@ -45,11 +49,11 @@ public class Author {
         this.country = country;
     }
 
-    public Invention getInvention() {
-        return invention;
+    public Set<Invention> getInventions() {
+        return inventions;
     }
 
-    public void setInvention(Invention invention) {
-        this.invention = invention;
+    public void setInventions(Set<Invention> inventions) {
+        this.inventions = inventions;
     }
 }

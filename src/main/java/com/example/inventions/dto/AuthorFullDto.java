@@ -1,22 +1,24 @@
 package com.example.inventions.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.Set;
 
-public class AuthorDto {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class AuthorFullDto {
     private Long id;
     private String name;
     private String country;
     private Set<InventionDto> inventions;
 
-    public AuthorDto() {}
-
-    public AuthorDto(Long id, String name, String country) {
-        this.id = id;
-        this.name = name;
-        this.country = country;
+    // Геттеры и сеттеры
+    public Long getId() {
+        return id;
     }
 
-    // Геттеры и сеттеры
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -31,14 +33,6 @@ public class AuthorDto {
 
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public Set<InventionDto> getInventions() {

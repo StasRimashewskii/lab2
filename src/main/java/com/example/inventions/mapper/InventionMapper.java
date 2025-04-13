@@ -9,11 +9,9 @@ import org.springframework.stereotype.Component;
 public class InventionMapper {
 
     private final CategoryMapper categoryMapper;
-    private final AuthorMapper authorMapper;
 
-    public InventionMapper(CategoryMapper categoryMapper, AuthorMapper authorMapper) {
+    public InventionMapper(CategoryMapper categoryMapper) {
         this.categoryMapper = categoryMapper;
-        this.authorMapper = authorMapper;
     }
 
     public InventionFullDto convertToFullDto(Invention invention) {
@@ -23,7 +21,6 @@ public class InventionMapper {
         dto.setDescription(invention.getDescription());
         dto.setInstruction(invention.getInstruction());
         dto.setCategories(categoryMapper.convertToDto(invention.getCategories()));
-        dto.setAuthors(authorMapper.convertToDto(invention.getAuthors())); // Изменено на authors
         return dto;
     }
 

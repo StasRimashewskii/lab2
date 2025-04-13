@@ -74,7 +74,7 @@ public class InventionController {
 
     @GetMapping("/search/authors-country")
     public ResponseEntity<List<InventionDto>> findInventionsByAuthorsCountry(@RequestParam String country) {
-        List<InventionDto> inventions = inventionService.findInventionsByAuthorsCountry(country);
+        List<InventionDto> inventions = inventionService.findInventionsByAuthorCountry(country);
         return ResponseEntity.ok(inventions);
     }
 

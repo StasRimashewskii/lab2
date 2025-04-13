@@ -22,8 +22,8 @@ public interface InventionRepository extends JpaRepository<Invention, Long> {
     @Query("SELECT DISTINCT i FROM Invention i JOIN i.categories c WHERE LOWER(c.name) IN :categoryNames")
     List<Invention> findByCategoriesNameIn(@Param("categoryNames") List<String> categoryNames);
 
-    @Query("SELECT DISTINCT i FROM Invention i JOIN i.authors auth WHERE auth.country = :country")
-    List<Invention> findByAuthorsCountry(@Param("country") String country);
+    @Query("SELECT DISTINCT i FROM Invention i JOIN i.author auth WHERE auth.country = :country")
+    List<Invention> findByAuthorCountry(@Param("country") String country);
 
     @Query("""
     SELECT i FROM Invention i WHERE SIZE(i.categories) = :categoryCount AND NOT EXISTS (
@@ -32,4 +32,7 @@ public interface InventionRepository extends JpaRepository<Invention, Long> {
 """)
     List<Invention> findByExactCategories(@Param("categoryNames") List<String> categoryNames,
                                           @Param("categoryCount") long categoryCount);
+
+    @Query("SELECT i FROM Invention i WHERE i.author.id = :authorId")
+    List<Invention> findByAuthorId(@Param("authorId") Long authorId);
 }

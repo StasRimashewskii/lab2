@@ -177,8 +177,8 @@ public class InventionService {
     }
 
     @Transactional(readOnly = true)
-    public List<InventionDto> findInventionsByAuthorsCountry(String country) {
-        List<Invention> inventions = inventionRepository.findByAuthorsCountry(country);
+    public List<InventionDto> findInventionsByAuthorCountry(String country) {
+        List<Invention> inventions = inventionRepository.findByAuthorCountry(country);
 
         if (inventions.isEmpty()) {
             throw new EntityNotFoundException("No inventions found with authors from country: " + country);
