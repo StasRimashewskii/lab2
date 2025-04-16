@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/logs")
-@Tag(name = "Log Controller", description = "API для работы с логами приложения")
+@Tag(name = "Управление логами", description = "API для работы с логами приложения")
 public class LogController {
 
     @Operation(

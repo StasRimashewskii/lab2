@@ -9,7 +9,7 @@ import com.example.inventions.entity.Invention;
 import com.example.inventions.mapper.AuthorMapper;
 import com.example.inventions.repository.AuthorRepository;
 import com.example.inventions.repository.InventionRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.example.inventions.exceptions.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
