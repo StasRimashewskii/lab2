@@ -222,4 +222,127 @@ class InventionServiceTest {
         verify(inventionRepository).findByAuthorCountry(country);
         verify(inventionMapper).convertToDto(invention);
     }
+
+    @Test
+    void findInventionsByTitleNative() {
+        String title = "native test";
+        String cacheKey = "inventions_by_title_native:native test";
+
+        when(inventionCache.getList(cacheKey, InventionDto.class)).thenReturn(null);
+        Invention invention = new Invention();
+        when(inventionRepository.findByTitleContainingIgnoreCaseNative(title)).thenReturn(List.of(invention));
+        InventionDto inventionDto = new InventionDto();
+        when(inventionMapper.convertToDto(invention)).thenReturn(inventionDto);
+
+        List<InventionDto> result = inventionService.findInventionsByTitleNative(title);
+
+        assertEquals(1, result.size());
+        assertEquals(inventionDto, result.get(0));
+        verify(inventionCache).getList(cacheKey, InventionDto.class);
+        verify(inventionRepository).findByTitleContainingIgnoreCaseNative(title);
+        verify(inventionMapper).convertToDto(invention);
+        verify(inventionCache).put(cacheKey, result);
+    }
+
+    @Test
+    void removeCategoryFromInvention() {
+        Long inventionId = 1L;
+        Long categoryId = 1L;
+
+        Invention invention = new Invention();
+        Set<Category> categories = new HashSet<>();
+        Category category = new Category();
+        category.setId(categoryId);
+        categories.add(category);
+        invention.setCategories(categories);
+
+        when(inventionRepository.findById(inventionId)).thenReturn(Optional.of(invention));
+        when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
+
+        inventionService.removeCategoryFromInvention(inventionId, categoryId);
+
+        assertFalse(invention.getCategories().contains(category));
+        verify(inventionRepository).findById(inventionId);
+        verify(categoryRepository).findById(categoryId);
+        verify(inventionRepository).save(invention);
+    }
+
+    @Test
+    void findInventionsByExactCategories() {
+        List<String> categoryNames = List.of("category1", "category2"); // Corrected argument
+        Invention invention = new Invention();
+        when(inventionRepository.findByExactCategories(categoryNames, categoryNames.size())).thenReturn(List.of(invention)); // Make sure to use the same argument as in the code
+
+        InventionDto inventionDto = new InventionDto();
+        when(inventionMapper.convertToDto(invention)).thenReturn(inventionDto);
+
+        List<InventionDto> result = inventionService.findInventionsByExactCategories(categoryNames);
+
+        assertEquals(1, result.size());
+        assertEquals(inventionDto, result.get(0));
+        verify(inventionRepository).findByExactCategories(categoryNames, categoryNames.size());
+        verify(inventionMapper).convertToDto(invention);
+    }
+
+
+    @Test
+    void findInventionsByCategoryNames_NoResults() {
+        List<String> categoryNames = List.of("category1", "category2"); // Corrected argument
+        when(inventionRepository.findByCategoriesNameIn(categoryNames)).thenReturn(Collections.emptyList());
+
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> inventionService.findInventionsByCategoryNames(categoryNames));
+
+        assertEquals("No inventions found with categories: [category1, category2]", exception.getMessage()); // Use lowercase category names
+        verify(inventionRepository).findByCategoriesNameIn(categoryNames);
+    }
+
+
+    @Test
+    void findInventionsByAuthorCountry_NoResults() {
+        String country = "Russia";
+
+        when(inventionRepository.findByAuthorCountry(country)).thenReturn(Collections.emptyList());
+
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> inventionService.findInventionsByAuthorCountry(country));
+
+        assertEquals("No inventions found with authors from country: Russia", exception.getMessage());
+        verify(inventionRepository).findByAuthorCountry(country);
+    }
+
+    @Test
+    void deleteInventionById_AdditionalCacheVerification() {
+        Long id = 2L;
+        Invention invention = new Invention();
+        invention.setTitle("Title to be deleted");
+
+        when(inventionRepository.findById(id)).thenReturn(Optional.of(invention));
+
+        inventionService.deleteInventionById(id);
+
+        verify(inventionCache, times(2)).evictByKeyPrefix(anyString()); // Проверяем, что оба ключа кеша были удалены
+    }
+
+    @Test
+    void createInvention_CategorySaveFails() {
+        InventionDto inventionDto = new InventionDto();
+        inventionDto.setTitle("Test");
+        inventionDto.setDescription("Description");
+        inventionDto.setInstruction("Instruction");
+
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setName("Category1");
+        inventionDto.setCategories(Set.of(categoryDto));
+
+        Category category = new Category();
+        category.setName("Category1");
+        when(categoryRepository.findByNameIgnoreCase("Category1")).thenReturn(Optional.empty());
+        when(categoryRepository.save(any())).thenThrow(new RuntimeException("Database error"));
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> inventionService.createInvention(inventionDto));
+
+        assertEquals("Database error", exception.getMessage());
+        verify(categoryRepository).findByNameIgnoreCase("Category1");
+        verify(categoryRepository).save(any());
+    }
+
 }
