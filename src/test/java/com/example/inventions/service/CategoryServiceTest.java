@@ -1,4 +1,4 @@
-package com.example.inventions;
+package com.example.inventions.service;
 
 import com.example.inventions.dto.CategoryDto;
 import com.example.inventions.entity.Category;
@@ -6,7 +6,6 @@ import com.example.inventions.entity.Invention;
 import com.example.inventions.mapper.CategoryMapper;
 import com.example.inventions.repository.CategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
-import com.example.inventions.service.CategoryService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -8,7 +8,6 @@ class InventionApplicationTests {
 
     @Test
     void contextLoads() {
-        // Пустой тест: если контекст загрузился без исключений — всё ок.
     }
 
 }
