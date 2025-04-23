@@ -155,4 +155,28 @@ public class AuthorController {
             @PathVariable String name) {
         return ResponseEntity.ok(authorService.getAuthorByName(name));
     }
+
+    @Operation(
+            summary = "Создать нескольких авторов",
+            description = "Добавляет список новых авторов в систему (bulk-операция)"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Авторы успешно созданы",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AuthorDto.class))),
+            @ApiResponse(responseCode = "400", description = "Некорректные данные авторов",
+                    content = @Content)
+    })
+    @PostMapping("/bulk")
+    public ResponseEntity<List<AuthorDto>> createAuthorsBulk(
+            @Parameter(description = "Список авторов для создания", required = true)
+            @Valid @RequestBody List<AuthorDto> authorDtos) {
+
+        List<AuthorDto> createdAuthors = authorDtos.stream()
+                .map(authorService::createAuthor)
+                .toList();
+
+        return ResponseEntity.ok(createdAuthors);
+    }
+
 }

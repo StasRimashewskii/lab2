@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
@@ -33,7 +34,7 @@ public class LogController {
                             name = "date",
                             description = "Дата для фильтрации логов",
                             required = true,
-                            example = "2023-05-15"
+                            example = "2025-05-15"
                     )
             }
     )
@@ -61,6 +62,16 @@ public class LogController {
                 .stream()
                 .filter(line -> line.contains(date.toString()))
                 .collect(Collectors.toList());
+
+        // Создание директории для логов, если её нет
+        Path logsDir = Paths.get("logs", date.toString());
+        if (Files.notExists(logsDir)) {
+            Files.createDirectories(logsDir);
+        }
+
+        // Запись логов в новый файл
+        Path logFile = logsDir.resolve("logs_" + date + ".log");
+        Files.write(logFile, logs);
 
         return ResponseEntity.ok(logs);
     }

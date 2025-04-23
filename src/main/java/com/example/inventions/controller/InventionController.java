@@ -278,4 +278,28 @@ public class InventionController {
             @RequestParam String title) {
         return ResponseEntity.ok(inventionService.findInventionsByTitleNative(title));
     }
+
+    @Operation(
+            summary = "Создать несколько изобретений",
+            description = "Добавляет список новых изобретений в систему (bulk-операция)"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Изобретения успешно созданы",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = InventionFullDto.class))),
+            @ApiResponse(responseCode = "400", description = "Некорректные данные изобретений",
+                    content = @Content)
+    })
+    @PostMapping("/bulk")
+    public ResponseEntity<List<InventionFullDto>> createInventionsBulk(
+            @Parameter(description = "Список изобретений для создания", required = true)
+            @Valid @RequestBody List<InventionDto> inventionDtos) {
+
+        List<InventionFullDto> createdInventions = inventionDtos.stream()
+                .map(inventionService::createInvention)
+                .toList();
+
+        return ResponseEntity.ok(createdInventions);
+    }
+
 }
